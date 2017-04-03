@@ -1,0 +1,63 @@
+many systems provide hardware support for critical section code.
+modern machines provide special atomic hardware instructions: atomic = non-interruptible.
+    ex) test memory word and set value; swap contents of two memory words
+
+important concept about lock is that if one thread in critical section, no other activity (including OS) can run.
+
+testandset instruction: write to a memory location after saving the old value and then return the old value;
+swap instruction: switch using temporary variable in the middle.
+
+Semaphores: (yay)
+Semaphores have non negative integer value and supports the following:
+P(): wait for semaphore to become positive and decrease by 1; [i.e wait() operation]
+V(): increases the semaphore by 1, waking up a waiting P, if any; [i.e signal() operation]
+
+Two uses of sema:
+    1. mutual exclusion(binary semaphore): initial value = 1;
+       counting semaphore: integer range over unrestricted domain;
+    2. Execution order (scheduling constraints initial value = 0);
+       (ex. threadjoin you need thread finish to complete first, so initial value of sema = 0 and threadfinish is signal() and thread join is semawait())
+    
+semaphores are good prevention to the race condition but they are not the absolute guarantee that the system is free from those problems
+
+
+producer-consumer problem
+
+    how to use semaphore
+    producer - buffer - consumer problem
+
+    consumer needs to wait until producer fills the buffer if empty (scheduling constraint)
+    Producer neneds to wait for consumer to make room in the buffer (scheduling constraint)
+    only one thread can manipulate buffer queue at a time (mutual exclusion).
+
+    general rule of thumb: use a separate semaphore for each constraint
+
+    semaphore full;
+    semaphore empty;
+    semaphore mutex;
+
+    since there are two agents (producer and consumer); mutex = 1;
+    since there are N empty slots; empty = N;
+    since there are no data; full = 0;
+
+    producer{
+        empty.wait()
+        mutex.wait()
+        enqueue(items)
+        mutex.signal()
+        full.signal()
+    }
+
+    consumer{
+        full.wait()
+        mutex.wait()
+        dequeue(items)
+        mutex.signal()
+        empty.signal()
+        return item
+    }
+
+readers and writers problem
+dining philosophers problem
+
+
