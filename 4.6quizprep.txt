@@ -1,0 +1,46 @@
+Reader-Writer problem
+
+single writer -> [buffer]-> any number of reader can work on this buffer, but when writer is writing, reader cannot access.
+1 semaphore is needed.
+mutual exclusiveness of writer and reader.
+need to keep track of number of readers that are reading.
+
+entry: [mutual exclusion: one process can be in CS, progress: process wishing to access should be able to enter immediately if no other thread,
+        bounded wait time]
+[critical section]
+exit:
+
+Deadlock problem:
+    multiple processes are waiting for the other to finish; thus neither ever finishes
+
+starvation vs Deadlock:
+    starvation: thread waits indefinitely. can still end after waiting for a whileee.
+    deadlock: circular waiting for resources. can't end without external intervention.
+
+Deadlock => starvation but not vice versa.
+
+
+solution to the deadlock problem:
+    1. more chopsticks/remove philosopher.
+    2. rollback
+    3. pre-empt with priority
+    4. atomic (picking up two chopstick should be one action)
+
+Monitor:
+    A high level abstraction that provides a convenient and effective mechanism for process sync
+    (next level semaphore).
+
+methods for handling deadlocks:
+    1. proactive - deadlock prevention & avoidance
+    2. reactive - deadlock detection & eecovery
+    3. no handling = ignore the problem and pretend that deadlocks never occur in the system.
+
+Deadlock happens when these 4 conditions are held at the same time:
+    1. mutual exclusion (limited resources: (ex. printer spooling, allow sharing).
+    2. no preemption (allow preemption with saving/restoring state)
+    3. hold and wait
+    4. circular wait
+
+Deadlock avoidance:
+    divide the states, make sure that the system never enters the unsafe state.
+
